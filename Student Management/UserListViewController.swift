@@ -2,8 +2,8 @@
 //  UserListViewController.swift
 //  Student Management
 //
-//  Created by Ajith on 10/15/20.
-//  Copyright © 2020 Ajith. All rights reserved.
+//  Created by Antriv Singh on 10/13/20.
+//  Copyright © 2020 Antriv Singh. All rights reserved.
 //
 
 import UIKit

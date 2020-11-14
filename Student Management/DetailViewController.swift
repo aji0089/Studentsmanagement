@@ -2,8 +2,8 @@
 //  DetailViewController.swift
 //  Student Management
 //
-//  Created by Ajith on 10/15/20.
-//  Copyright © 2020 Ajith. All rights reserved.
+//  Created by Antriv Singh on 10/13/20.
+//  Copyright © 2020 Antriv Singh. All rights reserved.
 //
 
 import UIKit
@@ -72,18 +72,66 @@ class DetailViewController: UIViewController {
         marktxt.text = mark
         
         //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "home", style: .plain, target: self, action: #selector(addTapped))
-        let barButton = UIBarButtonItem(image: UIImage(named: "home"), landscapeImagePhone: nil, style: .done, target: self, action: #selector(addTapped))
-        self.navigationItem.rightBarButtonItem = barButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(DeleteData))
+       // let barButton = UIBarButtonItem(image: UIImage(named: "home"), landscapeImagePhone: nil, style: .done, target: self, action: #selector(addTapped))
+        //self.navigationItem.rightBarButtonItem = barButton
         // Do any additional setup after loading the view.
     }
-    @objc func addTapped(){
+    
+    func removeCoreData() {
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "LoginDetails")
+         request.predicate = NSPredicate(format: "uniqueID == %@",regNum )
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+
+                  do {
+                      try managedContext.execute(deleteRequest)
+                    let alertController = UIAlertController(title: "Student management", message: "Data Delete Succefully!!!", preferredStyle: .alert)
+
+                                                                                                 // Create the actions
+                                                                                          let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                                                                     UIAlertAction in
+                                                                                                     NSLog("OK Pressed")
+                                        //self.navigationController?.popViewController(animated: true)
+                                          let vc = self.storyboard?.instantiateViewController(identifier: "login") as! ViewController
+                                          
+                                          self.navigationController?.pushViewController(vc, animated: true)
+                                                                                            
+                                                                                                 }
+
+                                                                                                 // Add the actions
+                                                                                                 alertController.addAction(okAction)
+                                                                                                // alertController.addAction(cancelAction)
+
+                                                                                                 // Present the controller
+                                                                                                 self.present(alertController, animated: true, completion: nil)
+                                            
+                    
+                  } catch let error as NSError {
+                      // TODO: handle the error
+                      print(error.localizedDescription)
+                  }
+      
+        
+      
+    }
+    @objc func DeleteData(){
         
         
         //self.performSegue(withIdentifier: "login", sender: self)
-        let vc = self.storyboard?.instantiateViewController(identifier: "login") as! ViewController
         
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        removeCoreData()
+        
+        
+        
+        
+        
+  
         
     }
     override func viewWillAppear(_ animated: Bool) {
